@@ -1,9 +1,13 @@
 import UIKit
 import SnapKit
 import Then
+import Combine
 
 final class HomeViewController: UIViewController {
     
+    private let viewModel = MovieViewModel()
+    private var cancellables = Set<AnyCancellable>()
+
     private let welcomeLabel: UILabel = .init().then {
         $0.text = "What do you want to watch?"
         $0.textColor = .white
@@ -32,6 +36,11 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = UIColor(hex: "242A32")
         setupViews()
         setupCollectionView()
+        
+        viewModel.getTrendingMovies()
+        viewModel.$movies.sink { [weak self] _ in
+                    self?.collectionView.reloadData()
+                }.store(in: &cancellables)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,7 +82,7 @@ final class HomeViewController: UIViewController {
 
 extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return viewModel.movies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -82,7 +91,8 @@ extension HomeViewController: UICollectionViewDataSource {
             for: indexPath) as? MovieCollectionViewCell else {
             fatalError("Could not cast to DishesCollectionViewCell")
         }
-        cell.setupData(title: "Interstellar")
+        let movie = viewModel.movies[indexPath.item]
+        cell.configureData(title: movie.title, year: movie.year)
         return cell
     }
     
@@ -91,9 +101,9 @@ extension HomeViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedItem = indexPath.item
+        let selectedMovie = viewModel.movies[indexPath.item]
         let vc = DetailViewController()
-        vc.item = selectedItem
+        vc.item = selectedMovie.imdbID
         navigationController?.pushViewController(vc, animated: true)
     }
 }
