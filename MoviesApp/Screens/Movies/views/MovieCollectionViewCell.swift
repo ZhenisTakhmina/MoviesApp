@@ -22,7 +22,15 @@ final class MovieCollectionViewCell: UICollectionViewCell {
     private let movieTitle: UILabel = .init().then{
         $0.textAlignment = .left
         $0.textColor = .white
-        $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        $0.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        $0.lineBreakMode = .byWordWrapping
+        $0.numberOfLines = 0
+    }
+    
+    private let movieYear: UILabel = .init().then{
+        $0.textAlignment = .left
+        $0.textColor = .white
+        $0.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
     }
@@ -38,7 +46,7 @@ final class MovieCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupViews(){
-        contentView.addSubviews([movieImageView,movieTitle])
+        contentView.addSubviews([movieImageView,movieTitle, movieYear])
         contentView.backgroundColor = UIColor(hex: "242A32")
         contentView.layer.cornerRadius = 16
         
@@ -46,11 +54,17 @@ final class MovieCollectionViewCell: UICollectionViewCell {
             $0.top.equalToSuperview().offset(8)
             $0.leading.equalToSuperview().offset(8)
             $0.trailing.equalToSuperview().offset(-8)
-            $0.height.equalTo(180)
+            $0.height.equalTo(155)
         }
         
         movieTitle.snp.makeConstraints {
             $0.top.equalTo(movieImageView.snp.bottom).offset(10)
+            $0.leading.equalToSuperview().offset(12)
+            $0.trailing.equalToSuperview().offset(-12)
+        }
+        
+        movieYear.snp.makeConstraints{
+            $0.top.equalTo(movieTitle.snp.bottom).offset(5)
             $0.leading.equalToSuperview().offset(12)
             $0.trailing.equalToSuperview().offset(-12)
         }
@@ -69,8 +83,9 @@ final class MovieCollectionViewCell: UICollectionViewCell {
         layer.shadowPath = cgPath
     }
     
-    public func setupData(title: String) {
+    func configureData(title: String, year: String) {
         movieTitle.text = title
+        movieYear.text = year
     }
     
 }
