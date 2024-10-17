@@ -10,7 +10,7 @@ import Foundation
 struct MovieResponse: Codable {
     let movieResults: [Movie]
     let results: Int
-    let totalResults: Int
+    let totalResults: String
     let status: String
     let statusMessage: String
     
@@ -19,7 +19,7 @@ struct MovieResponse: Codable {
         case results
         case totalResults = "Total_results"
         case status
-        case status = "status_message"
+        case statusMessage = "status_message"
     }
 }
 
