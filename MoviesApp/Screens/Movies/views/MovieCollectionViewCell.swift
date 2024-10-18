@@ -13,7 +13,7 @@ final class MovieCollectionViewCell: UICollectionViewCell {
     static let reuseID = String(describing: MovieCollectionViewCell.self)
     
     private let movieImageView: UIImageView = .init().then {
-        $0.image = UIImage(named: "ex_icon")
+        $0.image = UIImage(named: "no-photo")
         $0.layer.cornerRadius = 16
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
