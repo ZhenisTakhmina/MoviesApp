@@ -75,6 +75,10 @@ final class SearchViewController: UIViewController{
 }
 
 extension SearchViewController: SearchContainerViewDelegate {
+    func returnButtonTapped(lastWord: String) {
+        filterMovies(with: lastWord)
+    }
+    
     func searchCompleted(word: String) {
         filterMovies(with: word)
     }

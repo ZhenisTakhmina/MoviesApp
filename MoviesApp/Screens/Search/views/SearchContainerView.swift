@@ -12,11 +12,12 @@ import SnapKit
 protocol SearchContainerViewDelegate: AnyObject {
     func searchCompleted(word: String)
     func clearButtonTapped(isTapped: Bool)
+    func returnButtonTapped(lastWord: String)
 }
 
 final class SearchContainerView: UIView {
     
-    private let searchViewController: SearchViewController = SearchViewController()
+    private lazy var searchViewController: SearchViewController = SearchViewController()
     
     var delegate: SearchContainerViewDelegate?
     
@@ -83,6 +84,14 @@ extension SearchContainerView: UITextFieldDelegate {
                 delegate?.searchCompleted(word: "")
             }
         }
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let text = textField.text {
+            delegate?.returnButtonTapped(lastWord: text)
+        }
+        textField.resignFirstResponder()
         return true
     }
     
