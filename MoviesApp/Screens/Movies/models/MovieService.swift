@@ -20,7 +20,7 @@ final class MovieService {
         
         let session = URLSession.shared
         
-        guard let url = URL(string: "https://movies-tv-shows-database.p.rapidapi.com/?page=1") else {
+        guard let url = URL(string: "https://movies-tv-shows-database.p.rapidapi.com/?page=\(page)") else {
             print("Invalid url")
             return
         }
@@ -61,7 +61,6 @@ final class MovieService {
         
         for page in 1...totalPages {
             dispatchGroup.enter()
-            
             fetchTrendingMovies(page: page) { result in
                 switch result {
                 case .success(let movies):
