@@ -9,7 +9,9 @@ import UIKit
 
 final class SearchResultTableViewCell: UITableViewCell {
     
-    static let reuseID = String(describing: SearchResultTableViewCell.self)
+    enum Constants {
+        static let reuseID = String(describing: SearchResultTableViewCell.self)
+    }
     
     private let moviemageView: UIImageView = UIImageView().then {
         $0.layer.cornerRadius = 8

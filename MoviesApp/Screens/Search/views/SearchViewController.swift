@@ -19,7 +19,7 @@ final class SearchViewController: UIViewController{
     private lazy var searchTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(SearchResultTableViewCell.self,
-                           forCellReuseIdentifier: SearchResultTableViewCell.reuseID)
+                           forCellReuseIdentifier: SearchResultTableViewCell.Constants.reuseID)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
@@ -105,12 +105,10 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: SearchResultTableViewCell.reuseID,
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: SearchResultTableViewCell.Constants.reuseID,
             for: indexPath
-        ) as? SearchResultTableViewCell else {
-            fatalError("recent not found")
-        }
+        ) as! SearchResultTableViewCell
         let movie = filteredMovies[indexPath.row]
         cell.configureData(movie: movie)
         return cell

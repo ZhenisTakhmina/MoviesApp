@@ -86,17 +86,20 @@ final class DetailViewController: UIViewController {
         view.backgroundColor = UIColor(hex: "242A32")
         setupViews()
         setupConstraints()
-        
-        viewModel.getMovieById(movieId: item ?? "")
-        viewModel.$selectedMovieDetail.sink { [weak self] movieDetail in
-            guard let self = self, let movieDetail = movieDetail else { return }
-            setupData(movieDetail: movieDetail)
-        }.store(in: &cancellables)
+        bind()
     }
     
     private func setupViews() {
         view.addSubviews([movieImageView, titleLabel, ratingLabel, infoStackView, categoryLabel, descriptionTitleLabel, descriptionLabel])
         infoStackView.addArrangedSubviews([lengthLabel,ratedLabel,releaseDateLabel])
+    }
+    
+    func bind() {
+        viewModel.getMovieById(movieId: item ?? "")
+        viewModel.$selectedMovieDetail.sink { [weak self] movieDetail in
+            guard let self = self, let movieDetail = movieDetail else { return }
+            setupData(movieDetail: movieDetail)
+        }.store(in: &cancellables)
     }
     
     private func setupData(movieDetail: MovieDetail?) {

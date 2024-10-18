@@ -10,7 +10,9 @@ import Then
 
 final class MovieCollectionViewCell: UICollectionViewCell {
     
-    static let reuseID = String(describing: MovieCollectionViewCell.self)
+    enum Constants {
+        static let reuseID = String(describing: MovieCollectionViewCell.self)
+    }
     
     private let movieImageView: UIImageView = .init().then {
         $0.image = UIImage(named: "no-photo")

@@ -73,7 +73,7 @@ final class HomeViewController: UIViewController {
         collectionView.backgroundColor = UIColor(hex: "242A32")
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.reuseID)
+        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.Constants.reuseID)
         collectionView.showsVerticalScrollIndicator = false
     }
 }
@@ -86,11 +86,9 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: MovieCollectionViewCell.reuseID,
-            for: indexPath) as? MovieCollectionViewCell else {
-            fatalError("Could not cast to DishesCollectionViewCell")
-        }
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: MovieCollectionViewCell.Constants.reuseID,
+            for: indexPath) as! MovieCollectionViewCell
         let movie = viewModel.movies[indexPath.item]
         cell.configureData(title: movie.title, year: movie.year)
         return cell
