@@ -15,20 +15,20 @@ class MovieViewModel: ObservableObject {
     
     private let service = MovieService()
     
-    func getTrendingMovies() {
-        service.fetchTrendingMovies { [weak self] result in
+    func getAllTrendingMovies() {
+        service.fetchAllTrendingMovies(totalPages: 5) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let movies):
                     self?.movies = movies
-                    print("Movies: \(movies)")
+                    print("Movies: \(movies.count)")
                 case .failure(let error):
                     self?.errorMessage = "Failed to fetch movies: \(error.localizedDescription)"
                 }
             }
         }
     }
-
+    
     func getMovieById(movieId: String) {
         service.fetchMovieById(movieId: movieId) { [weak self] result in
             DispatchQueue.main.async {

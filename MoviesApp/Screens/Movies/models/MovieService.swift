@@ -11,7 +11,7 @@ import Foundation
 
 final class MovieService {
     
-    func fetchTrendingMovies(completion: @escaping (Result<[Movie], Error>) -> Void){
+    func fetchTrendingMovies(page: Int, completion: @escaping (Result<[Movie], Error>) -> Void){
         let headers = [
             "x-rapidapi-key": "73f2296a35msh67f9a9720c634b6p17969ajsn84bb057bebff",
             "x-rapidapi-host": "movies-tv-shows-database.p.rapidapi.com",
@@ -53,6 +53,29 @@ final class MovieService {
         
         dataTask.resume()
         
+    }
+    
+    func fetchAllTrendingMovies(totalPages: Int, completion: @escaping (Result<[Movie], Error>) -> Void) {
+        var allMovies: [Movie] = []
+        let dispatchGroup = DispatchGroup()
+        
+        for page in 1...totalPages {
+            dispatchGroup.enter()
+            
+            fetchTrendingMovies(page: page) { result in
+                switch result {
+                case .success(let movies):
+                    allMovies.append(contentsOf: movies)
+                case .failure(let error):
+                    print("Failed to fetch movies from page \(page): \(error)")
+                }
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            completion(.success(allMovies))
+        }
     }
     
     
@@ -98,5 +121,5 @@ final class MovieService {
         
         dataTask.resume()
     }
-
 }
+

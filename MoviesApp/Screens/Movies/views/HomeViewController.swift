@@ -37,7 +37,7 @@ final class HomeViewController: UIViewController {
         setupViews()
         setupCollectionView()
         
-        viewModel.getTrendingMovies()
+        viewModel.getAllTrendingMovies()
         viewModel.$movies.sink { [weak self] _ in
                     self?.collectionView.reloadData()
                 }.store(in: &cancellables)
