@@ -19,7 +19,7 @@ final class DetailViewController: UIViewController {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
-        $0.image = UIImage(named: "ex_icon")
+        $0.image = UIImage(named: "banner")
     }
     
     private let titleLabel = UILabel().then {
@@ -51,21 +51,21 @@ final class DetailViewController: UIViewController {
     private let ratedLabel = UILabel().then {
         $0.font = UIFont.boldSystemFont(ofSize: 15)
         $0.textColor = .white
-        $0.backgroundColor = .black.withAlphaComponent(0.5)
+        $0.backgroundColor = .red.withAlphaComponent(0.2)
         $0.textAlignment = .center
     }
     
     private let releaseDateLabel = UILabel().then {
         $0.font = UIFont.boldSystemFont(ofSize: 15)
         $0.textColor = .white
-        $0.backgroundColor = .black.withAlphaComponent(0.5)
+        $0.backgroundColor = .red.withAlphaComponent(0.2)
         $0.textAlignment = .center
     }
     
     private let lengthLabel = UILabel().then {
         $0.font = UIFont.boldSystemFont(ofSize: 15)
         $0.textColor = .white
-        $0.backgroundColor = .black.withAlphaComponent(0.5)
+        $0.backgroundColor = .red.withAlphaComponent(0.2)
         $0.textAlignment = .center
     }
     
