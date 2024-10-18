@@ -86,7 +86,7 @@ final class DetailViewController: UIViewController {
         view.backgroundColor = UIColor(hex: "242A32")
         setupViews()
         setupConstraints()
-        bind()
+        bindViewModel()
     }
     
     private func setupViews() {
@@ -94,29 +94,28 @@ final class DetailViewController: UIViewController {
         infoStackView.addArrangedSubviews([lengthLabel,ratedLabel,releaseDateLabel])
     }
     
-    func bind() {
-        viewModel.getMovieById(movieId: item ?? "")
-        viewModel.$selectedMovieDetail.sink { [weak self] movieDetail in
-            guard let self = self, let movieDetail = movieDetail else { return }
-            setupData(movieDetail: movieDetail)
-        }.store(in: &cancellables)
+    func bindViewModel() {
+        guard let movieId = item else { return }
+        viewModel.getMovieById(movieId: movieId)
+        
+        viewModel.$selectedMovieDetail
+            .compactMap { $0 }
+            .sink { [weak self] movieDetail in
+                self?.updateUI(with: movieDetail)
+            }
+            .store(in: &cancellables)
     }
     
-    private func setupData(movieDetail: MovieDetail?) {
-        guard let movieDetail = movieDetail else {
-            titleLabel.text = "Movie details unavailable"
-            return
-        }
-        
+    private func updateUI(with movieDetail: MovieDetail) {
         titleLabel.text = movieDetail.title ?? "Title unavailable"
         ratingLabel.text = "⭐ \(movieDetail.imdbRating ?? "N/A")/10 IMDb"
         categoryLabel.text = "Genres: \(movieDetail.genres?.joined(separator: ", ") ?? "No categories available")"
         descriptionLabel.text = movieDetail.description ?? "No description available"
         lengthLabel.text = "\(movieDetail.runtime ?? 0) min"
         releaseDateLabel.text = movieDetail.releaseDate ?? "Release date unavailable"
-        ratedLabel.text = movieDetail.rated ?? "unavailable"
+        ratedLabel.text = movieDetail.rated ?? "Unavailable"
     }
-
+    
     private func setupConstraints() {
         movieImageView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()

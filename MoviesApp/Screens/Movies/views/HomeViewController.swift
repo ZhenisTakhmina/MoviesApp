@@ -7,7 +7,8 @@ final class HomeViewController: UIViewController {
     
     private let viewModel = MovieViewModel()
     private var cancellables = Set<AnyCancellable>()
-
+    
+    
     private let welcomeLabel: UILabel = .init().then {
         $0.text = "What do you want to watch?"
         $0.textColor = .white
@@ -36,11 +37,8 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = UIColor(hex: "242A32")
         setupViews()
         setupCollectionView()
-        
         viewModel.getAllTrendingMovies()
-        viewModel.$movies.sink { [weak self] _ in
-                    self?.collectionView.reloadData()
-                }.store(in: &cancellables)
+        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +50,13 @@ final class HomeViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    func bind() {
+        viewModel.getAllTrendingMovies()
+        viewModel.$movies.sink { [weak self] _ in
+            self?.collectionView.reloadData()
+        }.store(in: &cancellables)
     }
     
     private func setupViews() {
