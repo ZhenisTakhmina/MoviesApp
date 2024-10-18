@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MovieDetail: Codable {
+struct MovieDetail: Decodable {
     let title: String?
     let description: String?
     let year: String?
